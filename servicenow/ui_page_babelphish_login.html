@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<html>
+<head>
+  <title>BabelPhish Login - The Intelligent Experience</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Landing Page Styles */
+    .landing-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+      padding: 20px;
+    }
+
+    .landing-content {
+      text-align: center;
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fish-logo {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 32px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .landing-title {
+      font-size: 48px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .landing-title .brand-name {
+      color: #0ea5e9;
+    }
+
+    .landing-subtitle {
+      font-size: 18px;
+      color: #64748b;
+      margin-bottom: 40px;
+    }
+
+    .login-button {
+      background-color: #0ea5e9;
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(14, 165, 233, 0.3);
+    }
+
+    .login-button:hover {
+      background-color: #0284c7;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(14, 165, 233, 0.4);
+    }
+
+    .login-button:active {
+      transform: translateY(0px);
+    }
+
+    /* Login Modal Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(30, 41, 59, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .login-modal {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      position: relative;
+      animation: slideUp 0.4s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .close-button {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .close-button:hover {
+      color: #64748b;
+    }
+
+    .modal-header {
+      margin-bottom: 24px;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .modal-description {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 40px 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+      background-color: white;
+    }
+
+    .form-input:focus {
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+    }
+
+    .form-input.error {
+      border-color: #ef4444;
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+
+    .input-icon:hover {
+      color: #64748b;
+    }
+
+    .input-icon.error-icon {
+      color: #ef4444;
+    }
+
+    .error-message {
+      display: none;
+      color: #ef4444;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .submit-button {
+      width: 100%;
+      background-color: #0ea5e9;
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 8px;
+    }
+
+    .submit-button:hover {
+      background-color: #0284c7;
+    }
+
+    .submit-button:disabled {
+      background-color: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Landing Page -->
+  <div class="landing-page" id="landingPage">
+    <div class="landing-content">
+      <svg class="fish-logo" viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="80" fill="#0ea5e9"/>
+        <circle cx="120" cy="85" r="8" fill="#1e293b"/>
+        <path d="M20 100 L60 80 L60 120 Z" fill="#fbbf24"/>
+      </svg>
+
+      <h1 class="landing-title">I am <span class="brand-name">BabelPhish</span></h1>
+      <p class="landing-subtitle">the intelligent experience</p>
+
+      <button class="login-button" onclick="showLoginModal()">
+        Login
+      </button>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="login-modal">
+      <button class="close-button" onclick="closeLoginModal()">&times;</button>
+
+      <div class="modal-header">
+        <h2 class="modal-title">Login</h2>
+        <p class="modal-description">Enter your email below to login to your account.</p>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <div class="input-wrapper">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              placeholder="m@example.com"
+              required
+            />
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m2 7 10 7 10-7"/>
+            </svg>
+          </div>
+          <div class="error-message" id="emailError">Please enter a valid email address</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-input"
+              required
+            />
+            <svg class="input-icon" id="passwordToggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" onclick="togglePassword()">
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <div class="error-message" id="passwordError">Password is required</div>
+        </div>
+
+        <button type="submit" class="submit-button" id="submitButton">
+          Login
+        </button>
+      </form>
+
+      <div class="error-message" id="loginError" style="margin-top: 16px; text-align: center;">
+        Invalid email or password
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showLoginModal() {
+      document.getElementById('modalOverlay').classList.add('active');
+      document.getElementById('email').focus();
+    }
+
+    function closeLoginModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+      clearErrors();
+    }
+
+    function togglePassword() {
+      var passwordInput = document.getElementById('password');
+      var type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+    }
+
+    function clearErrors() {
+      document.getElementById('email').classList.remove('error');
+      document.getElementById('password').classList.remove('error');
+      document.getElementById('emailError').classList.remove('show');
+      document.getElementById('passwordError').classList.remove('show');
+      document.getElementById('loginError').classList.remove('show');
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      clearErrors();
+
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+      var submitButton = document.getElementById('submitButton');
+
+      // Basic validation
+      if (!email || !validateEmail(email)) {
+        document.getElementById('email').classList.add('error');
+        document.getElementById('emailError').classList.add('show');
+        return false;
+      }
+
+      if (!password) {
+        document.getElementById('password').classList.add('error');
+        document.getElementById('passwordError').classList.add('show');
+        return false;
+      }
+
+      // Show loading state
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<span class="loading-spinner"></span>Logging in...';
+
+      // Perform ServiceNow authentication
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/now/table/sys_user', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Accept', 'application/json');
+
+      // For ServiceNow authentication, we need to use basic auth
+      var authString = btoa(email + ':' + password);
+      xhr.setRequestHeader('Authorization', 'Basic ' + authString);
+
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          // Authentication successful
+          // Store session and redirect
+          var returnUrl = '${gs.getSession().get("babelphish_return_url")}' || 'babelphish_main';
+          window.location.href = returnUrl;
+        } else {
+          // Authentication failed
+          document.getElementById('loginError').classList.add('show');
+          submitButton.disabled = false;
+          submitButton.innerHTML = 'Login';
+        }
+      };
+
+      xhr.onerror = function() {
+        document.getElementById('loginError').classList.add('show');
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Login';
+      };
+
+      // Send a simple query to test authentication
+      xhr.send(JSON.stringify({
+        sysparm_query: 'email=' + email,
+        sysparm_limit: 1
+      }));
+
+      return false;
+    }
+
+    function validateEmail(email) {
+      var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // Close modal on overlay click
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeLoginModal();
+      }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeLoginModal();
+      }
+    });
+  </script>
+</body>
+</html>
+</j:jelly>

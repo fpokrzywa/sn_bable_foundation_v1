@@ -1,0 +1,1295 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<g:evaluate>
+var isLoggedIn = gs.getUser().getID() != '';
+if (!isLoggedIn) {
+  g.getSession().put('babelphish_return_url', g.getRequest().getRequestURL());
+  response.sendRedirect('babelphish_login');
+}
+</g:evaluate>
+
+<html>
+<head>
+  <title>BabelPhish - The Intelligent Experience</title>
+  <g:inline src="babelphish_styles.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h1>
+          <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6.5 12c.94-3.46 4.94-6 9.5-6 3.87 0 7 3.13 7 7s-3.13 7-7 7c-.53 0-1.04-.1-1.52-.26"/>
+            <path d="M6 12c0-3.87 3.13-7 7-7 .53 0 1.04.1 1.52.26"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+          BabelPhish
+        </h1>
+        <button class="sidebar-toggle" onclick="toggleSidebar()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <line x1="9" y1="3" x2="9" y2="21"/>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- AI Tools -->
+        <div class="nav-section">
+          <div class="nav-item" data-section="aitools">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+            <span>AI Tools</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+          <div class="nav-subitems" id="aitools-subitems">
+            <div class="nav-item" data-item="aistore">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/>
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/>
+                <path d="M2 7h20"/>
+                <path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/>
+              </svg>
+              <span>AI Store</span>
+            </div>
+            <div class="nav-item" data-item="promptcatalog">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              <span>Prompt Catalog</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workspace -->
+        <div class="nav-section">
+          <div class="nav-item active" data-section="workspace">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+            </svg>
+            <span>Workspace</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform: rotate(90deg);">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+          <div class="nav-subitems open" id="workspace-subitems">
+            <div class="nav-item active" data-item="mainworkspace">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+              </svg>
+              <span>Main Workspace</span>
+            </div>
+            <div class="nav-item" data-item="mychanges">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+              </svg>
+              <span>My Changes</span>
+            </div>
+            <div class="nav-item" data-item="incidents">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+              </svg>
+              <span>Incidents</span>
+            </div>
+            <div class="nav-item" data-item="bable">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+              </svg>
+              <span>Bable</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User -->
+        <div class="nav-section">
+          <div class="nav-item" data-section="user">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>User</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+          <div class="nav-subitems" id="user-subitems">
+            <div class="nav-item" data-item="profile">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Profile &amp; Settings</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Find Answers -->
+        <div class="nav-section">
+          <div class="nav-item" data-section="findanswers">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <span>Find Answers</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+          <div class="nav-subitems" id="findanswers-subitems">
+            <div class="nav-item" data-item="itsupport">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+              <span>IT Support Guides</span>
+            </div>
+            <div class="nav-item" data-item="mysupport">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+              <span>My Support Guides</span>
+            </div>
+            <div class="nav-item" data-item="hrpolicies">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+              <span>HR Policies</span>
+            </div>
+            <div class="nav-item" data-item="nieaguides">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+              <span>NIEA Guides</span>
+            </div>
+            <div class="nav-item" data-item="adeptguides">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+              <span>ADEPT Guides</span>
+            </div>
+            <div class="nav-item" data-item="freddieit">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+              <span>Freddie is IT</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Administration -->
+        <div class="nav-section">
+          <div class="nav-item" data-section="administration">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span>Administration</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+          <div class="nav-subitems" id="administration-subitems">
+            <div class="nav-item" data-item="usermanagement">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <span>User Management</span>
+            </div>
+            <div class="nav-item" data-item="rolemanagement">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6m0 6v6"/>
+                <path d="m4.2 4.2 4.2 4.2m5.2 5.2 4.2 4.2"/>
+                <path d="M1 12h6m6 0h6"/>
+                <path d="m4.2 19.8 4.2-4.2m5.2-5.2 4.2-4.2"/>
+              </svg>
+              <span>Role Management</span>
+            </div>
+            <div class="nav-item" data-item="companymanagement">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+              </svg>
+              <span>Company Management</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <j:set var="currentUser" value="${gs.getUser()}" />
+          ${currentUser.getEmail()}
+        </div>
+        <button class="logout-btn" onclick="logoutUser()">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <!-- Welcome Page -->
+      <div class="page-container active" id="welcome-page">
+        <div class="welcome-container">
+          <svg class="fish-icon" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="80" fill="#0ea5e9"/>
+            <circle cx="120" cy="85" r="8" fill="#1e293b"/>
+            <path d="M20 100 L60 80 L60 120 Z" fill="#fbbf24"/>
+          </svg>
+
+          <h1 class="welcome-title">Welcome to BabelPhish</h1>
+          <p class="welcome-subtitle">
+            Your intelligent AI assistant for ServiceNow. Ask questions, get answers, and streamline your workflow.
+          </p>
+
+          <div class="quick-actions">
+            <p class="quick-actions-title">Quick Actions</p>
+            <div class="action-links">
+              <a class="action-link" href="javascript:void(0)" onclick="navigateTo('incidents')">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                View My Incidents
+              </a>
+              <a class="action-link" href="javascript:void(0)" onclick="navigateTo('mychanges')">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                View My Changes
+              </a>
+              <a class="action-link" href="javascript:void(0)" onclick="navigateTo('aistore')">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="7" width="20" height="15" rx="2" ry="2"/>
+                  <polyline points="17 2 12 7 7 2"/>
+                </svg>
+                Browse AI Tools
+              </a>
+            </div>
+          </div>
+
+          <div class="input-container">
+            <input
+              type="text"
+              class="message-input"
+              placeholder="Ask me anything..."
+              id="messageInput"
+            />
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" onclick="sendMessage()">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Store Page -->
+      <div class="page-container" id="aistore-page">
+        <div class="ai-store-page">
+          <div class="page-header">
+            <h1 class="page-title">Welcome to the AI Storefront</h1>
+            <p class="page-subtitle">
+              Each Assistant is created to help you do a specific set of tasks. Get answers to your questions, brainstorm ideas, create new content, and more!
+            </p>
+          </div>
+
+          <div class="store-controls">
+            <div class="filter-search-row">
+              <div class="filter-dropdown">
+                <select id="store-filter" class="filter-select" onchange="filterStore()">
+                  <option value="All">All</option>
+                  <option value="Recently Added">Recently Added</option>
+                  <option value="Name A-Z">Name A-Z</option>
+                  <option value="Name Z-A">Name Z-A</option>
+                  <option value="Favorites">Favorites</option>
+                </select>
+              </div>
+
+              <div class="search-container">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input
+                  type="text"
+                  id="store-search"
+                  class="search-input"
+                  placeholder="Search using assistant name"
+                  oninput="filterStore()"
+                />
+              </div>
+
+              <div class="store-actions">
+                <button class="refresh-btn" onclick="refreshStore()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 2v6h-6"/>
+                    <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+                    <path d="M3 22v-6h6"/>
+                    <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+                  </svg>
+                  <span>Refresh</span>
+                </button>
+                <span class="assistant-count" id="assistant-count">4 assistants</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="assistants-grid" id="assistants-grid">
+            <!-- Assistants will be rendered here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Prompt Catalog Page -->
+      <div class="page-container" id="promptcatalog-page">
+        <div class="prompt-catalog-page">
+          <div class="page-header">
+            <h1 class="page-title">Prompt Catalog</h1>
+            <p class="page-subtitle">
+              Discover and use pre-built prompts to get the most out of your AI assistants. Browse by category, assistant, or search for specific use cases.
+            </p>
+          </div>
+
+          <div class="catalog-controls">
+            <div class="catalog-tabs-header">
+              <div class="catalog-tabs">
+                <button class="catalog-tab active" onclick="switchCatalogTab('common')">
+                  Common Prompts
+                </button>
+                <button class="catalog-tab" id="favorites-tab" style="display: none;" onclick="switchCatalogTab('favorites')">
+                  Favorite Prompts
+                </button>
+              </div>
+              <button class="refresh-btn" onclick="refreshCatalog()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 2v6h-6"/>
+                  <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+                  <path d="M3 22v-6h6"/>
+                  <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+                </svg>
+                <span>Refresh</span>
+              </button>
+            </div>
+
+            <div class="catalog-filter-row">
+              <div class="filter-group">
+                <label class="filter-label">Assistant</label>
+                <select id="catalog-assistant-filter" class="filter-select">
+                  <option value="All Assistants">All Assistants</option>
+                  <option value="ODIN">ODIN</option>
+                  <option value="NOW Assist Guru">NOW Assist Guru</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label class="filter-label">Task</label>
+                <select id="catalog-task-filter" class="filter-select">
+                  <option value="Select Task...">Select Task...</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Creative Writing">Creative Writing</option>
+                  <option value="HR">HR</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label class="filter-label">Functional Area</label>
+                <select id="catalog-area-filter" class="filter-select">
+                  <option value="Select Functional Area...">Select Functional Area...</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Engineering">Engineering</option>
+                  <option value="Operations">Operations</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="search-row">
+              <div class="search-container-full">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input
+                  type="text"
+                  id="catalog-search"
+                  class="search-input-full"
+                  placeholder="Search prompts..."
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="prompts-grid" id="prompts-grid">
+            <!-- Prompts will be rendered here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Find Answers Page -->
+      <div class="page-container" id="findanswers-page">
+        <div class="find-answers-layout">
+          <div class="center-panel" id="find-answers-center-panel">
+            <div class="center-panel-header">
+              <div>
+                <h1 class="center-panel-title" id="find-answers-title">IT Support Guides</h1>
+                <p class="center-panel-description" id="find-answers-description">Quick solutions and how-to guides for common IT issues within the company.</p>
+              </div>
+              <div class="center-panel-actions">
+                <button class="refresh-button" onclick="refreshFindAnswers()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 2v6h-6"/>
+                    <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+                    <path d="M3 22v-6h6"/>
+                    <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+                  </svg>
+                  <span>Refresh</span>
+                </button>
+                <button class="close-button" onclick="closeFindAnswersCenter()">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="center-panel-content">
+              <div class="info-box">
+                <div class="info-box-header">
+                  <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                  <span class="info-title">Try it yourself!</span>
+                </div>
+                <p class="info-description">
+                  Explore <span id="info-category-title">IT Support Guides</span> to find helpful information and resources.
+                </p>
+                <ul class="info-list">
+                  <li>Ask ODIN questions about <span id="info-category-lower">IT support guides</span></li>
+                </ul>
+              </div>
+
+              <div class="articles-section">
+                <h2 class="articles-title">
+                  Here are the sample articles that power the answers about your questions
+                </h2>
+                <div class="articles-list" id="articles-list">
+                  <!-- Articles will be rendered here -->
+                </div>
+
+                <button class="explore-link">
+                  <span>Explore all <span id="explore-category">IT Support Resources</span></span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </button>
+
+                <div class="debug-section">
+                  <button class="debug-info-toggle" onclick="toggleDebugInfo()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <line x1="12" y1="16" x2="12" y2="12"/>
+                      <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    <span>Debug Information</span>
+                  </button>
+                  <div class="debug-details" id="debug-details" style="display: none;">
+                    <div class="debug-item">
+                      <strong>Debug Info:</strong> Successfully loaded: <span id="debug-title">IT Support Guides</span>
+                    </div>
+                    <div class="debug-item">
+                      <strong>Section:</strong> A1970-5
+                    </div>
+                    <div class="debug-item">
+                      <strong>Assistant ID:</strong> asst_7a1fCTMvfcmqNBLBvwAZzyEv
+                    </div>
+                    <div class="debug-item">
+                      <strong>Has Data:</strong> Yes
+                    </div>
+                    <div class="debug-item">
+                      <strong>Title:</strong> <span id="debug-title-2">IT Support Guides</span>
+                    </div>
+                    <div class="debug-item">
+                      <strong>Articles Count:</strong> <span id="debug-articles-count">3</span>
+                    </div>
+                    <div class="debug-item">
+                      <strong>To 11 before match:</strong> Yes
+                    </div>
+                    <div class="debug-item">
+                      <strong>Assistant ID from Data:</strong> asst_7a1fCTMvfcmqNBLBvwAZzyEv
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-panel" id="find-answers-chat">
+            <div class="chat-controls-header">
+              <select class="model-select">
+                <option>GPT-4o</option>
+                <option>GPT-4</option>
+                <option>GPT-3.5</option>
+              </select>
+              <button class="prompts-button" onclick="openPromptModal()">Prompts</button>
+              <button class="clear-button">Clear</button>
+            </div>
+
+            <div class="chat-workspace-content">
+              <svg class="fish-icon" viewBox="0 0 200 200" fill="none">
+                <circle cx="100" cy="100" r="80" fill="#0ea5e9"/>
+                <circle cx="120" cy="85" r="8" fill="#1e293b"/>
+                <path d="M20 100 L60 80 L60 120 Z" fill="#fbbf24"/>
+              </svg>
+
+              <h1 class="workspace-title">Welcome to BabelPhish</h1>
+
+              <p class="workspace-subtitle">
+                Start by typing a command or query below to create your first widget.
+              </p>
+
+              <div class="quick-actions-workspace">
+                <div class="quick-actions-title">Quick browse items</div>
+
+                <div class="action-links-workspace">
+                  <a href="#" class="action-link-workspace">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    <span>Get my incidents</span>
+                  </a>
+
+                  <a href="#" class="action-link-workspace">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    <span>Show me high priority changes</span>
+                  </a>
+
+                  <a href="#" class="action-link-workspace">
+                    <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    <span>Are there any recurring problems?</span>
+                  </a>
+                </div>
+              </div>
+
+              <div class="workspace-input-container">
+                <input
+                  type="text"
+                  class="workspace-message-input"
+                  placeholder="Please type your message here"
+                  id="find-answers-input"
+                  onkeypress="if(event.key === 'Enter') { sendFindAnswersMessage(); }"
+                />
+                <svg class="workspace-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" onclick="sendFindAnswersMessage()">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </div>
+
+              <div class="workspace-input-footer">
+                <button>Use Commands</button>
+                <button>Workspace</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prompt Catalog Modal -->
+  <div class="prompt-modal-overlay" id="prompt-modal" style="display: none;" onclick="closePromptModal()">
+    <div class="prompt-modal-content" onclick="event.stopPropagation()">
+      <div class="prompt-modal-header">
+        <div class="prompt-modal-title-section">
+          <h2 class="prompt-modal-title">Prompt Catalog</h2>
+          <button class="view-full-catalog-btn">
+            View full Prompt Catalog
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+          </button>
+        </div>
+        <button class="prompt-modal-close" onclick="closePromptModal()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="prompt-modal-tabs">
+        <button class="prompt-modal-tab active" id="prompt-common-tab" onclick="switchPromptTab('common')">
+          Agentic Weaver Common Prompts
+        </button>
+        <button class="prompt-modal-tab" id="prompt-favorites-tab" onclick="switchPromptTab('favorites')" style="display: none;">
+          Your Prompts
+        </button>
+      </div>
+
+      <div class="prompt-modal-filters">
+        <div class="prompt-modal-filter-row">
+          <div class="prompt-modal-filter-group">
+            <label class="prompt-modal-filter-label">Assistant</label>
+            <select class="prompt-modal-filter-select" id="prompt-assistant-filter">
+              <option value="ODIN">ODIN</option>
+              <option value="NOW Assist Guru">NOW Assist Guru</option>
+            </select>
+          </div>
+
+          <div class="prompt-modal-filter-group">
+            <label class="prompt-modal-filter-label">Task</label>
+            <select class="prompt-modal-filter-select" id="prompt-task-filter">
+              <option value="Select Task...">Select Task...</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Creative Writing">Creative Writing</option>
+              <option value="Science">Science</option>
+            </select>
+          </div>
+
+          <div class="prompt-modal-filter-group">
+            <label class="prompt-modal-filter-label">Functional Area</label>
+            <select class="prompt-modal-filter-select" id="prompt-functional-filter">
+              <option value="Select Functional Area...">Select Functional Area...</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Research">Research</option>
+              <option value="Education">Education</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="prompt-modal-search-row">
+          <div class="prompt-modal-search-container">
+            <svg class="prompt-modal-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input
+              type="text"
+              placeholder="Search prompts..."
+              class="prompt-modal-search-input"
+              id="prompt-search-input"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="prompt-modal-body" id="prompt-modal-body">
+        <!-- Prompts will be rendered here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data stores
+    var assistantFavorites = [];
+    var promptFavorites = [];
+    var currentCatalogTab = 'common';
+
+    var assistantsData = [
+      {
+        id: '1',
+        name: 'ODIN (Sample)',
+        description: 'You are a helpful assistant named ODIN, you are a meta-agent.... (This is sample data)',
+        model: 'gpt-4.1',
+        icon: 'shopping-bag',
+        iconColor: '#ec4899'
+      },
+      {
+        id: '2',
+        name: 'Prompt Architect (Sample)',
+        description: 'You are a Prompt Architect AI. Your job is to write optimized system prompts....',
+        model: 'gpt-4.1',
+        icon: 'zap',
+        iconColor: '#10b981'
+      },
+      {
+        id: '3',
+        name: 'Code Review Assistant',
+        description: 'An AI assistant specialized in reviewing code for best practices, security issues, and optimization opportunities.',
+        model: 'gpt-4.1',
+        icon: 'shopping-bag',
+        iconColor: '#3b82f6'
+      },
+      {
+        id: '4',
+        name: 'Content Writer',
+        description: 'A creative writing assistant that helps you craft engaging content, blog posts, and marketing copy.',
+        model: 'gpt-4.1',
+        icon: 'zap',
+        iconColor: '#f59e0b'
+      }
+    ];
+
+    var promptsData = [
+      {
+        id: '1',
+        assistant: 'ODIN',
+        title: 'BabelPhish Assistant',
+        description: 'This is my description for this prompt',
+        tags: ['marketing', 'creative']
+      },
+      {
+        id: '2',
+        assistant: 'ODIN',
+        title: 'Brainstorm ideas for a new marketing campaign.',
+        description: 'Generate creative ideas and strategies for an upcoming marketing campaign.',
+        tags: ['Marketing', 'Brainstorming']
+      },
+      {
+        id: '3',
+        assistant: 'ODIN',
+        title: 'Write a short story about a futuristic city.',
+        description: 'Create a captivating short story set in a technologically advanced, futuristic urban environment.',
+        tags: ['Creative Writing', 'Fiction']
+      },
+      {
+        id: '4',
+        assistant: 'NOW Assist Guru',
+        title: 'Generate a list of interview questions for a software engineer role.',
+        description: 'Formulate relevant and insightful interview questions suitable for evaluating candidates for a software engineer position.',
+        tags: ['Hiring', 'HR']
+      }
+    ];
+
+    function toggleSidebar() {
+      var sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('collapsed');
+    }
+
+    // Navigation functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize pages
+      renderAssistants();
+      renderPrompts();
+
+      // Handle section toggles
+      document.querySelectorAll('[data-section]').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          var section = this.getAttribute('data-section');
+          var subitems = document.getElementById(section + '-subitems');
+          var chevron = this.querySelector('.chevron');
+
+          if (subitems) {
+            var isOpen = subitems.classList.contains('open');
+
+            // Close all other sections
+            document.querySelectorAll('.nav-subitems').forEach(function(otherSubitems) {
+              if (otherSubitems !== subitems) {
+                otherSubitems.classList.remove('open');
+              }
+            });
+
+            // Reset all other chevrons
+            document.querySelectorAll('[data-section] .chevron').forEach(function(otherChevron) {
+              if (otherChevron !== chevron) {
+                otherChevron.style.transform = 'rotate(0deg)';
+              }
+            });
+
+            if (isOpen) {
+              subitems.classList.remove('open');
+              chevron.style.transform = 'rotate(0deg)';
+            } else {
+              subitems.classList.add('open');
+              chevron.style.transform = 'rotate(90deg)';
+            }
+          }
+        });
+      });
+
+      // Handle item clicks
+      document.querySelectorAll('[data-item]').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+          e.stopPropagation();
+
+          // Remove active class from all items
+          document.querySelectorAll('.nav-item').forEach(function(navItem) {
+            navItem.classList.remove('active');
+          });
+
+          // Add active class to clicked item
+          this.classList.add('active');
+
+          // Navigate to the item
+          var itemName = this.getAttribute('data-item');
+          var findAnswersCategories = ['itsupport', 'mysupport', 'hrpolicies', 'nieaguides', 'adeptguides', 'freddieit'];
+          if (findAnswersCategories.indexOf(itemName) !== -1) {
+            navigateTo('findanswers-' + itemName);
+          } else {
+            navigateTo(itemName);
+          }
+        });
+      });
+
+      // Message input enter key
+      document.getElementById('messageInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+    });
+
+    var currentFindAnswersCategory = 'itsupport';
+    var findAnswersCategoryData = {
+      'itsupport': {
+        title: 'IT Support Guides',
+        description: 'Quick solutions and how-to guides for common IT issues within the company.',
+        articles: [
+          { id: '1', title: 'Password Reset Procedures' },
+          { id: '2', title: 'Software Installation Guide' },
+          { id: '3', title: 'Network Troubleshooting' }
+        ]
+      },
+      'mysupport': {
+        title: 'My Support Guides',
+        description: 'Your personal collection of support guides and documentation.',
+        articles: [
+          { id: '1', title: 'My Custom IT Procedures' },
+          { id: '2', title: 'Personal Troubleshooting Notes' }
+        ]
+      },
+      'hrpolicies': {
+        title: 'HR Policies',
+        description: 'Company HR policies, procedures, and employee guidelines.',
+        articles: [
+          { id: '1', title: 'Time Off Request Policy' },
+          { id: '2', title: 'Remote Work Guidelines' },
+          { id: '3', title: 'Employee Benefits Overview' }
+        ]
+      },
+      'nieaguides': {
+        title: 'NIEA Guides',
+        description: 'NIEA-specific documentation and compliance guides.',
+        articles: [
+          { id: '1', title: 'NIEA Compliance Standards' },
+          { id: '2', title: 'NIEA Reporting Procedures' }
+        ]
+      },
+      'adeptguides': {
+        title: 'ADEPT Guides',
+        description: 'ADEPT system guides and best practices documentation.',
+        articles: [
+          { id: '1', title: 'ADEPT System Overview' },
+          { id: '2', title: 'ADEPT Best Practices' }
+        ]
+      },
+      'freddieit': {
+        title: 'Freddie is IT',
+        description: 'Freddie IT infrastructure and system documentation.',
+        articles: [
+          { id: '1', title: 'Freddie IT Infrastructure Guide' },
+          { id: '2', title: 'Freddie IT Security Protocols' }
+        ]
+      }
+    };
+
+    function navigateTo(destination) {
+      console.log('Navigating to: ' + destination);
+
+      // Hide all pages
+      document.querySelectorAll('.page-container').forEach(function(page) {
+        page.classList.remove('active');
+      });
+
+      // Show the requested page
+      if (destination === 'aistore') {
+        document.getElementById('aistore-page').classList.add('active');
+      } else if (destination === 'promptcatalog') {
+        document.getElementById('promptcatalog-page').classList.add('active');
+      } else if (destination.indexOf('findanswers-') === 0) {
+        var category = destination.replace('findanswers-', '');
+        showFindAnswersPage(category);
+      } else if (destination === 'incidents') {
+        window.location.href = 'incident_list.do';
+      } else if (destination === 'mychanges') {
+        window.location.href = 'change_request_list.do';
+      } else {
+        document.getElementById('welcome-page').classList.add('active');
+      }
+    }
+
+    function showFindAnswersPage(category) {
+      currentFindAnswersCategory = category;
+      var categoryData = findAnswersCategoryData[category];
+
+      if (categoryData) {
+        document.getElementById('find-answers-title').textContent = categoryData.title;
+        document.getElementById('find-answers-description').textContent = categoryData.description;
+        document.getElementById('info-category-title').textContent = categoryData.title;
+        document.getElementById('info-category-lower').textContent = categoryData.title.toLowerCase();
+        document.getElementById('explore-category').textContent = categoryData.title;
+
+        document.getElementById('debug-title').textContent = categoryData.title;
+        document.getElementById('debug-title-2').textContent = categoryData.title;
+        document.getElementById('debug-articles-count').textContent = categoryData.articles.length;
+
+        var articlesList = document.getElementById('articles-list');
+        articlesList.innerHTML = '';
+
+        categoryData.articles.forEach(function(article) {
+          var articleItem = document.createElement('div');
+          articleItem.className = 'article-item';
+          articleItem.innerHTML =
+            '<span class="article-title">' + article.title + '</span>' +
+            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+              '<polyline points="9 18 15 12 9 6"/>' +
+            '</svg>';
+          articlesList.appendChild(articleItem);
+        });
+
+        document.getElementById('find-answers-center-panel').classList.remove('hidden');
+        document.getElementById('find-answers-chat').classList.remove('expanded');
+      }
+
+      document.getElementById('findanswers-page').classList.add('active');
+    }
+
+    function toggleDebugInfo() {
+      var debugDetails = document.getElementById('debug-details');
+      if (debugDetails.style.display === 'none') {
+        debugDetails.style.display = 'block';
+      } else {
+        debugDetails.style.display = 'none';
+      }
+    }
+
+    function closeFindAnswersCenter() {
+      document.getElementById('find-answers-center-panel').classList.add('hidden');
+      document.getElementById('find-answers-chat').classList.add('expanded');
+    }
+
+    function refreshFindAnswers() {
+      showFindAnswersPage(currentFindAnswersCategory);
+    }
+
+    function sendFindAnswersMessage() {
+      var input = document.getElementById('find-answers-input');
+      var message = input.value.trim();
+      if (message) {
+        console.log('Sending Find Answers message: ' + message);
+        input.value = '';
+      }
+    }
+
+    // AI Store Functions
+    function renderAssistants() {
+      var filter = document.getElementById('store-filter').value;
+      var searchQuery = document.getElementById('store-search').value.toLowerCase();
+
+      var filtered = assistantsData.filter(function(assistant) {
+        var matchesSearch = assistant.name.toLowerCase().indexOf(searchQuery) !== -1;
+        if (filter === 'Favorites') {
+          return matchesSearch && assistantFavorites.indexOf(assistant.id) !== -1;
+        }
+        return matchesSearch;
+      });
+
+      if (filter === 'Name A-Z') {
+        filtered.sort(function(a, b) { return a.name.localeCompare(b.name); });
+      } else if (filter === 'Name Z-A') {
+        filtered.sort(function(a, b) { return b.name.localeCompare(a.name); });
+      }
+
+      var grid = document.getElementById('assistants-grid');
+      grid.innerHTML = '';
+
+      filtered.forEach(function(assistant) {
+        var isFavorite = assistantFavorites.indexOf(assistant.id) !== -1;
+        var iconSvg = assistant.icon === 'shopping-bag'
+          ? '<path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/>'
+          : '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>';
+
+        var card = document.createElement('div');
+        card.className = 'assistant-card';
+        card.innerHTML =
+          '<div class="assistant-card-header">' +
+            '<div class="assistant-icon-wrapper">' +
+              '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="' + assistant.iconColor + '" stroke-width="2">' +
+                iconSvg +
+              '</svg>' +
+            '</div>' +
+            '<div class="assistant-title-section">' +
+              '<h3 class="assistant-name">' + assistant.name + '</h3>' +
+            '</div>' +
+            '<button class="favorite-btn ' + (isFavorite ? 'active' : '') + '" onclick="toggleAssistantFavorite(\'' + assistant.id + '\')">' +
+              '<svg width="20" height="20" viewBox="0 0 24 24" fill="' + (isFavorite ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="2">' +
+                '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' +
+              '</svg>' +
+            '</button>' +
+          '</div>' +
+          '<p class="assistant-description">' + assistant.description + '</p>' +
+          '<div class="assistant-model">' +
+            '<span class="model-badge">' + assistant.model + '</span>' +
+          '</div>';
+        grid.appendChild(card);
+      });
+
+      document.getElementById('assistant-count').textContent = filtered.length + ' assistants';
+    }
+
+    function toggleAssistantFavorite(id) {
+      var index = assistantFavorites.indexOf(id);
+      if (index > -1) {
+        assistantFavorites.splice(index, 1);
+      } else {
+        assistantFavorites.push(id);
+      }
+      renderAssistants();
+    }
+
+    function filterStore() {
+      renderAssistants();
+    }
+
+    function refreshStore() {
+      document.getElementById('store-filter').value = 'All';
+      document.getElementById('store-search').value = '';
+      renderAssistants();
+    }
+
+    // Prompt Catalog Functions
+    function renderPrompts() {
+      var searchQuery = document.getElementById('catalog-search').value.toLowerCase();
+
+      var filtered = promptsData.filter(function(prompt) {
+        if (currentCatalogTab === 'favorites') {
+          return promptFavorites.indexOf(prompt.id) !== -1;
+        }
+        return true;
+      });
+
+      if (searchQuery) {
+        filtered = filtered.filter(function(prompt) {
+          return prompt.title.toLowerCase().indexOf(searchQuery) !== -1 ||
+                 prompt.description.toLowerCase().indexOf(searchQuery) !== -1;
+        });
+      }
+
+      var grid = document.getElementById('prompts-grid');
+      grid.innerHTML = '';
+
+      filtered.forEach(function(prompt) {
+        var isFavorite = promptFavorites.indexOf(prompt.id) !== -1;
+
+        var card = document.createElement('div');
+        card.className = 'prompt-card';
+        card.innerHTML =
+          '<div class="prompt-card-header">' +
+            '<span class="prompt-assistant">' + prompt.assistant + '</span>' +
+            '<button class="favorite-btn ' + (isFavorite ? 'active' : '') + '" onclick="togglePromptFavorite(\'' + prompt.id + '\')">' +
+              '<svg width="18" height="18" viewBox="0 0 24 24" fill="' + (isFavorite ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="2">' +
+                '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' +
+              '</svg>' +
+            '</button>' +
+          '</div>' +
+          '<h3 class="prompt-title">' + prompt.title + '</h3>' +
+          '<p class="prompt-description">' + prompt.description + '</p>' +
+          '<div class="prompt-tags">' +
+            prompt.tags.map(function(tag) {
+              return '<span class="prompt-tag">' + tag + '</span>';
+            }).join('') +
+          '</div>';
+        grid.appendChild(card);
+      });
+    }
+
+    function togglePromptFavorite(id) {
+      var index = promptFavorites.indexOf(id);
+      if (index > -1) {
+        promptFavorites.splice(index, 1);
+      } else {
+        promptFavorites.push(id);
+      }
+
+      var favTab = document.getElementById('favorites-tab');
+      if (promptFavorites.length > 0) {
+        favTab.style.display = 'block';
+      } else {
+        favTab.style.display = 'none';
+        if (currentCatalogTab === 'favorites') {
+          switchCatalogTab('common');
+        }
+      }
+
+      renderPrompts();
+    }
+
+    function switchCatalogTab(tab) {
+      currentCatalogTab = tab;
+
+      document.querySelectorAll('.catalog-tab').forEach(function(tabBtn) {
+        tabBtn.classList.remove('active');
+      });
+
+      event.target.classList.add('active');
+      renderPrompts();
+    }
+
+    function refreshCatalog() {
+      document.getElementById('catalog-search').value = '';
+      renderPrompts();
+    }
+
+    function sendMessage() {
+      var input = document.getElementById('messageInput');
+      var message = input.value.trim();
+
+      if (message) {
+        console.log('Sending message: ' + message);
+        input.value = '';
+
+        var ga = new GlideAjax('BabelPhishAjax');
+        ga.addParam('sysparm_name', 'processMessage');
+        ga.addParam('sysparm_message', message);
+        ga.getXML(handleResponse);
+      }
+    }
+
+    function handleResponse(response) {
+      var answer = response.responseXML.documentElement.getAttribute('answer');
+      console.log('AI Response: ' + answer);
+      alert('BabelPhish says: ' + answer);
+    }
+
+    // Prompt Modal Functions
+    var promptModalFavorites = [];
+    var currentPromptModalTab = 'common';
+
+    var promptModalData = [
+      {
+        id: '1',
+        assistant: 'ODIN',
+        title: 'ServiceNow Assistant v4',
+        description: 'This is my description for this prompt',
+        tags: ['marketing', 'creative']
+      },
+      {
+        id: '2',
+        assistant: 'ODIN',
+        title: 'Brainstorm ideas for a new marketing campaign.',
+        description: 'Generate creative ideas and strategies for an upcoming marketing campaign.',
+        tags: ['Marketing', 'Brainstorming']
+      },
+      {
+        id: '3',
+        assistant: 'ODIN',
+        title: 'Write a short story about a futuristic city.',
+        description: 'Create a captivating short story set in a technologically advanced, futuristic urban environment.',
+        tags: ['Creative Writing', 'Fiction']
+      },
+      {
+        id: '4',
+        assistant: 'ODIN',
+        title: 'Explain the concept of quantum entanglement simply.',
+        description: 'Provide a clear and easy-to-understand explanation of quantum entanglement for a general audience.',
+        tags: ['Science', 'Education']
+      },
+      {
+        id: '5',
+        assistant: 'ODIN',
+        title: 'Summarize the key points of the attached research paper.',
+        description: 'Condense the essential information and main findings from the provided research paper.',
+        tags: ['Summarization', 'Research', 'Files']
+      }
+    ];
+
+    function openPromptModal() {
+      document.getElementById('prompt-modal').style.display = 'flex';
+      renderPromptModal();
+    }
+
+    function closePromptModal() {
+      document.getElementById('prompt-modal').style.display = 'none';
+    }
+
+    function switchPromptTab(tab) {
+      currentPromptModalTab = tab;
+      document.getElementById('prompt-common-tab').classList.toggle('active', tab === 'common');
+      document.getElementById('prompt-favorites-tab').classList.toggle('active', tab === 'favorites');
+      renderPromptModal();
+    }
+
+    function togglePromptModalFavorite(id) {
+      var index = promptModalFavorites.indexOf(id);
+      if (index > -1) {
+        promptModalFavorites.splice(index, 1);
+      } else {
+        promptModalFavorites.push(id);
+      }
+
+      var favTab = document.getElementById('prompt-favorites-tab');
+      if (promptModalFavorites.length > 0) {
+        favTab.style.display = 'block';
+      } else {
+        favTab.style.display = 'none';
+        if (currentPromptModalTab === 'favorites') {
+          switchPromptTab('common');
+        }
+      }
+
+      renderPromptModal();
+    }
+
+    function renderPromptModal() {
+      var filtered = currentPromptModalTab === 'favorites'
+        ? promptModalData.filter(function(p) { return promptModalFavorites.indexOf(p.id) !== -1; })
+        : promptModalData;
+
+      var body = document.getElementById('prompt-modal-body');
+      body.innerHTML = '<div class="prompt-modal-grid"></div>';
+      var grid = body.querySelector('.prompt-modal-grid');
+
+      filtered.forEach(function(prompt) {
+        var isFavorite = promptModalFavorites.indexOf(prompt.id) !== -1;
+
+        var card = document.createElement('div');
+        card.className = 'prompt-modal-card';
+        card.innerHTML =
+          '<div class="prompt-modal-card-header">' +
+            '<span class="prompt-modal-assistant">' + prompt.assistant + '</span>' +
+            '<button class="prompt-modal-favorite-btn ' + (isFavorite ? 'active' : '') + '" onclick="togglePromptModalFavorite(\'' + prompt.id + '\')">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="' + (isFavorite ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="2">' +
+                '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' +
+              '</svg>' +
+            '</button>' +
+          '</div>' +
+          '<h3 class="prompt-modal-card-title">' + prompt.title + '</h3>' +
+          '<p class="prompt-modal-card-description">' + prompt.description + '</p>' +
+          '<div class="prompt-modal-tags">' +
+            prompt.tags.map(function(tag) {
+              return '<span class="prompt-modal-tag">' + tag + '</span>';
+            }).join('') +
+          '</div>';
+        grid.appendChild(card);
+      });
+    }
+
+    function logoutUser() {
+      if (confirm('Are you sure you want to logout?')) {
+        window.location.href = '/logout.do';
+      }
+    }
+  </script>
+</body>
+</html>
+</j:jelly>

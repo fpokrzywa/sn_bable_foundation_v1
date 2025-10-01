@@ -1,0 +1,14 @@
+[
+  {
+    "email": "freddie@3cpublish.com",
+    "password": "test123"
+  },
+  {
+    "email": "admin@babelphish.com",
+    "password": "admin123"
+  },
+  {
+    "email": "user@babelphish.com",
+    "password": "user123"
+  }
+]
